@@ -24,12 +24,12 @@ class AwsController extends Controller
             $result = $ec2Client->startInstances(array(
                 'InstanceIds' => $instanceIds,
             ));
-            $telegram->sendMessage(env('TELEGRAM_CHAT_ID'), 'instance starting');
+            $telegram->sendMessage(env('TELEGRAM_CHAT_ID'), 'Instance starting');
         } else {
             $result = $ec2Client->stopInstances(array(
                 'InstanceIds' => $instanceIds,
             ));
-            $telegram->sendMessage(env('TELEGRAM_CHAT_ID'), 'instance stopping');
+            $telegram->sendMessage(env('TELEGRAM_CHAT_ID'), 'Instance stopping');
         }
 
     }
