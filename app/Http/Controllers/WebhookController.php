@@ -60,14 +60,11 @@ class WebhookController extends Controller
             $telegram->sendMessage($chat_id, 'Your ec2 instance ' . $this->getEC2Instance($chat_id) . ' is registered');
 
         } elseif ($action == 'run') {
-
+            $credentials = new \Aws\Credentials\Credentials($this->getAWSAccessKey($chat_id), $this->getAWSSecretKey($chat_id));
             $ec2Client = new Ec2Client([
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
-                'credentials' => [
-                    'key'    => $this->getAWSAccessKey($chat_id),
-                    'secret' => $this->getAWSSecretKey($chat_id),
-                ],
+                'credentials' => $credentials
             ]);
 
             $result = $ec2Client->startInstances(array(
@@ -77,14 +74,11 @@ class WebhookController extends Controller
             $telegram->sendMessage($chat_id, 'Instance starting');
 
         } elseif ($action == 'stop') {
-
+            $credentials = new \Aws\Credentials\Credentials($this->getAWSAccessKey($chat_id), $this->getAWSSecretKey($chat_id));
             $ec2Client = new Ec2Client([
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
-                'credentials' => [
-                    'key'    => $this->getAWSAccessKey($chat_id),
-                    'secret' => $this->getAWSSecretKey($chat_id),
-                ],
+                'credentials' => $credentials
             ]);
 
             $result = $ec2Client->stopInstances(array(
