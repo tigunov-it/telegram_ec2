@@ -66,7 +66,7 @@ class WebhookController extends Controller
             $secret = $this->getAWSSecretKey($chat_id);
 
             $ec2Client = new Ec2Client([
-                'region' => env('AWS_DEFAULT_REGION'),
+                'region' => 'eu-north-1',
                 'version' => 'latest',
                 'credentials' => [
                     'key' => $key,
@@ -88,7 +88,7 @@ class WebhookController extends Controller
             $secret = $this->getAWSSecretKey($chat_id);
 
             $ec2Client = new Ec2Client([
-                'region' => env('AWS_DEFAULT_REGION'),
+                'region' => 'eu-north-1',
                 'version' => 'latest',
                 'credentials' => [
                     'key' => $key,
