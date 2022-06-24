@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('instance_id');
+            $table->string('chat_id');
             $table->text('aws_access_key');
             $table->text('aws_secret_key');
         });
