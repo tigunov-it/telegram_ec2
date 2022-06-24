@@ -11,18 +11,6 @@ use Illuminate\Support\Facades\Log;
 class WebhookController extends Controller
 {
 
-//    public function test()
-//    {
-////        $instance = InstanceEC2::where('chat_id', 22222)->get();
-////        dd($instance);
-//
-//        foreach (InstanceEC2::all()->where('chat_id', 22222) as $instance) {
-//            dd($instance->instance_id);
-//        }
-//
-//    }
-
-
     public function index(Request $request, Telegram $telegram)
     {
 
@@ -69,15 +57,63 @@ class WebhookController extends Controller
                 ->update(['aws_secret_key' => $secret_key,]);
 
 
-            $telegram->sendMessage($chat_id, 'Your ec2 instance' . $this->getInstance($chat_id) . 'registered');
+            $telegram->sendMessage($chat_id, 'Your ec2 instance ' . $this->getEC2Instance($chat_id) . ' is registered');
+
+        } elseif ($action == 'run') {
+
+            $ec2Client = new Ec2Client([
+                'region' => env('AWS_DEFAULT_REGION'),
+                'version' => 'latest',
+                'credentials' => [
+                    'key'    => $this->getAWSAccessKey($chat_id),
+                    'secret' => $this->getAWSSecretKey($chat_id),
+                ],
+            ]);
+
+            $result = $ec2Client->startInstances(array(
+                'InstanceIds' => $this->getEC2Instance($chat_id),
+            ));
+
+            $telegram->sendMessage($chat_id, 'Instance starting');
+
+        } elseif ($action == 'stop') {
+
+            $ec2Client = new Ec2Client([
+                'region' => env('AWS_DEFAULT_REGION'),
+                'version' => 'latest',
+                'credentials' => [
+                    'key'    => $this->getAWSAccessKey($chat_id),
+                    'secret' => $this->getAWSSecretKey($chat_id),
+                ],
+            ]);
+
+            $result = $ec2Client->stopInstances(array(
+                'InstanceIds' => $this->getEC2Instance($chat_id),
+            ));
+
+            $telegram->sendMessage($chat_id, 'Instance stopping');
 
         }
 
     }
 
-    public function getInstance($chat_id) {
+    public function getEC2Instance($chat_id) {
         foreach (InstanceEC2::all()->where('chat_id', $chat_id) as $instance) {
             return $instance->instance_id;
+        }
+
+    }
+
+    public function getAWSAccessKey($chat_id) {
+        foreach (InstanceEC2::all()->where('chat_id', $chat_id) as $aws_access_key) {
+            return $aws_access_key->aws_acess_key;
+        }
+
+    }
+
+    public function getAWSSecretKey($chat_id) {
+        foreach (InstanceEC2::all()->where('chat_id', $chat_id) as $aws_secret_key) {
+            return $aws_secret_key->aws_secret_key;
         }
 
     }
