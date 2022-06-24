@@ -28,6 +28,7 @@ class WebhookController extends Controller
 
             case '/start':
                 $telegram->sendMessage($chat_id, 'Write your EC2 instance id. (i-00000000000000000)');
+                break;
 
             case preg_match($pattern_instance, $action):
                 $instance_id = $request->input('message')['text'];
@@ -38,6 +39,7 @@ class WebhookController extends Controller
                 ]);
 
                 $telegram->sendMessage($chat_id, 'Write your Access key (AC:00000000000000000)');
+                break;
 
             case preg_match($pattern_access_key, $action):
                 $access_key = $request->input('message')['text'];
@@ -46,12 +48,15 @@ class WebhookController extends Controller
                     ->update(['aws_access_key' => $access_key,]);
 
                 $telegram->sendMessage($chat_id, 'Write your Secret key (SC:00000000000000000)');
+                break;
 
             case preg_match($pattern_secret_key, $action):
                 $secret_key = $request->input('message')['text'];
 
                 InstanceEC2::where('chat_id', $chat_id)
                     ->update(['aws_secret_key' => $secret_key,]);
+
+                break;
 
         }
 
