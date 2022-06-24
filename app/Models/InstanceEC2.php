@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class InstanceEC2 extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+
 }
