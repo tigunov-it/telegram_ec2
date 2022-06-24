@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
+
     public function index(Request $request, Telegram $telegram)
     {
 
@@ -39,8 +40,8 @@ class WebhookController extends Controller
 
         } elseif (preg_match($pattern_access_key, $action)) {
             $access_key_text = $request->input('message')['text'];
-            $needle = 'AC:';
-            $access_key = strrchr($access_key_text, $needle);
+            $needle = ':';
+            $access_key = ltrim(strrchr($access_key_text, $needle), ':');
 
             InstanceEC2::where('chat_id', $chat_id)
                 ->update(['aws_access_key' => $access_key,]);
@@ -49,8 +50,8 @@ class WebhookController extends Controller
 
         } elseif (preg_match($pattern_secret_key, $action)) {
             $secret_key_text = $request->input('message')['text'];
-            $needle = 'SC:';
-            $secret_key = strrchr($secret_key_text, $needle);
+            $needle = ':';
+            $secret_key = ltrim(strrchr($secret_key_text, $needle), ':');
 
             InstanceEC2::where('chat_id', $chat_id)
                 ->update(['aws_secret_key' => $secret_key,]);

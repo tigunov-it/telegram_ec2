@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/webhook', [\App\Http\Controllers\WebhookController::class, 'index']);
 
+//Route::get('/test', [\App\Http\Controllers\WebhookController::class, 'test']);
+
+
 //Route::post('/webhook', [\App\Http\Controllers\AwsController::class, 'startInstance']);
 Route::get('/webhook', function (){
     return redirect('/');
