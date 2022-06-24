@@ -20,9 +20,9 @@ class WebhookController extends Controller
         $action = $request->input('message')['text'];
         $chat_id = $request->input('message.from.id');
 
-        $pattern_instance = 'i-*';
-        $pattern_access_key = 'AC:*';
-        $pattern_secret_key = 'SC:*';
+        $pattern_instance = '/i-*';
+        $pattern_access_key = '/AC:*';
+        $pattern_secret_key = '/SC:*';
 
         if ($action == '/start') {
             $telegram->sendMessage($chat_id, 'Write your EC2 instance id. (i-00000000000000000)');
