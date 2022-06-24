@@ -25,7 +25,7 @@ class AwsController extends Controller
                 'InstanceIds' => $instanceIds,
             ));
             $telegram->sendMessage(env('TELEGRAM_CHAT_ID'), 'Instance starting');
-        } else {
+        } else if ($action == 'stop') {
             $result = $ec2Client->stopInstances(array(
                 'InstanceIds' => $instanceIds,
             ));
