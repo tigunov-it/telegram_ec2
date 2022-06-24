@@ -28,7 +28,7 @@ class WebhookController extends Controller
             $telegram->sendMessage($chat_id, 'Write your EC2 instance id. (i-00000000000000000)');
 
         } elseif (preg_match($pattern_instance, $action)) {
-            Log::debug(preg_match($pattern_instance, $action));
+
             $instance_id = $request->input('message')['text'];
 
             $instance = InstanceEC2::create([
@@ -55,6 +55,8 @@ class WebhookController extends Controller
 
             InstanceEC2::where('chat_id', $chat_id)
                 ->update(['aws_secret_key' => $secret_key,]);
+
+            $telegram->sendMessage($chat_id, 'Your ec2 instance'. InstanceEC2::where('chat_id', $chat_id)->instance_id() . 'registered');
 
         }
 
