@@ -60,29 +60,39 @@ class WebhookController extends Controller
             $telegram->sendMessage($chat_id, 'Your ec2 instance ' . $this->getEC2Instance($chat_id) . ' is registered');
 
         } elseif ($action == 'run') {
-            $credentials = new \Aws\Credentials\Credentials($this->getAWSAccessKey($chat_id), $this->getAWSSecretKey($chat_id));
+
             $ec2Client = new Ec2Client([
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
-                'credentials' => $credentials
+                'credentials' => [
+                    'key'    => $this->getAWSAccessKey($chat_id),
+                    'secret' => $this->getAWSSecretKey($chat_id),
+                ],
             ]);
 
+            $instanceIds = array($this->getEC2Instance($chat_id));
+
             $result = $ec2Client->startInstances(array(
-                'InstanceIds' => $this->getEC2Instance($chat_id),
+                'InstanceIds' => $instanceIds,
             ));
 
             $telegram->sendMessage($chat_id, 'Instance starting');
 
         } elseif ($action == 'stop') {
-            $credentials = new \Aws\Credentials\Credentials($this->getAWSAccessKey($chat_id), $this->getAWSSecretKey($chat_id));
+
             $ec2Client = new Ec2Client([
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
-                'credentials' => $credentials
+                'credentials' => [
+                    'key'    => $this->getAWSAccessKey($chat_id),
+                    'secret' => $this->getAWSSecretKey($chat_id),
+                ],
             ]);
 
+            $instanceIds = array($this->getEC2Instance($chat_id));
+
             $result = $ec2Client->stopInstances(array(
-                'InstanceIds' => $this->getEC2Instance($chat_id),
+                'InstanceIds' => $instanceIds,
             ));
 
             $telegram->sendMessage($chat_id, 'Instance stopping');
