@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 class WebhookController extends Controller
 {
 
+
     public function index(Request $request, Telegram $telegram)
     {
 
@@ -68,7 +69,7 @@ class WebhookController extends Controller
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
                 'credentials' => [
-                    'key'    => $key,
+                    'key' => $key,
                     'secret' => $secret
                 ],
             ]);
@@ -90,7 +91,7 @@ class WebhookController extends Controller
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
                 'credentials' => [
-                    'key'    => $key,
+                    'key' => $key,
                     'secret' => $secret
                 ],
             ]);
@@ -107,21 +108,24 @@ class WebhookController extends Controller
 
     }
 
-    public function getEC2Instance($chat_id) {
+    public function getEC2Instance($chat_id)
+    {
         foreach (InstanceEC2::all()->where('chat_id', $chat_id) as $instance) {
             return $instance->instance_id;
         }
 
     }
 
-    public function getAWSAccessKey($chat_id) {
+    public function getAWSAccessKey($chat_id)
+    {
         foreach (InstanceEC2::all()->where('chat_id', $chat_id) as $aws_access_key) {
-            return $aws_access_key->aws_acess_key;
+            return $aws_access_key->aws_access_key;
         }
 
     }
 
-    public function getAWSSecretKey($chat_id) {
+    public function getAWSSecretKey($chat_id)
+    {
         foreach (InstanceEC2::all()->where('chat_id', $chat_id) as $aws_secret_key) {
             return $aws_secret_key->aws_secret_key;
         }
