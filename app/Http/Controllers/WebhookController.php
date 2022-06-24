@@ -27,7 +27,7 @@ class WebhookController extends Controller
         if ($action == '/start') {
             $telegram->sendMessage($chat_id, 'Write your EC2 instance id. (i-00000000000000000)');
 
-        } elseif ($action == preg_match($pattern_instance, $action)) {
+        } elseif (preg_match($pattern_instance, $action)) {
             $instance_id = $request->input('message')['text'];
 
             $instance = InstanceEC2::create([
@@ -37,7 +37,7 @@ class WebhookController extends Controller
 
             $telegram->sendMessage($chat_id, 'Write your Access key (AC:00000000000000000)');
 
-        } elseif ($action == preg_match($pattern_access_key, $action)) {
+        } elseif (preg_match($pattern_access_key, $action)) {
             $access_key = $request->input('message')['text'];
 
             InstanceEC2::where('chat_id', $chat_id)
@@ -45,7 +45,7 @@ class WebhookController extends Controller
 
             $telegram->sendMessage($chat_id, 'Write your Secret key (SC:00000000000000000)');
 
-        } elseif ($action == preg_match($pattern_secret_key, $action)) {
+        } elseif (preg_match($pattern_secret_key, $action)) {
             $secret_key = $request->input('message')['text'];
 
             InstanceEC2::where('chat_id', $chat_id)
