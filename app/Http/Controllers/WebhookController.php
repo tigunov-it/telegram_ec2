@@ -61,12 +61,15 @@ class WebhookController extends Controller
 
         } elseif ($action == 'run') {
 
+            $key = $this->getAWSAccessKey($chat_id);
+            $secret = $this->getAWSSecretKey($chat_id);
+
             $ec2Client = new Ec2Client([
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
                 'credentials' => [
-                    'key'    => $this->getAWSAccessKey($chat_id),
-                    'secret' => $this->getAWSSecretKey($chat_id),
+                    'key'    => $key,
+                    'secret' => $secret
                 ],
             ]);
 
@@ -80,12 +83,15 @@ class WebhookController extends Controller
 
         } elseif ($action == 'stop') {
 
+            $key = $this->getAWSAccessKey($chat_id);
+            $secret = $this->getAWSSecretKey($chat_id);
+
             $ec2Client = new Ec2Client([
                 'region' => env('AWS_DEFAULT_REGION'),
                 'version' => 'latest',
                 'credentials' => [
-                    'key'    => $this->getAWSAccessKey($chat_id),
-                    'secret' => $this->getAWSSecretKey($chat_id),
+                    'key'    => $key,
+                    'secret' => $secret
                 ],
             ]);
 
