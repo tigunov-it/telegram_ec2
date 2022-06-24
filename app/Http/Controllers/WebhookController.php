@@ -24,35 +24,36 @@ class WebhookController extends Controller
         $pattern_access_key = '/AC:*/';
         $pattern_secret_key = '/SC:*/';
 
-        if ($action == '/start') {
-            $telegram->sendMessage($chat_id, 'Write your EC2 instance id. (i-00000000000000000)');
+        switch ($action) {
 
-        } if (preg_match($pattern_instance, $action)) {
-            $instance_id = $request->input('message')['text'];
+            case '/start':
+                $telegram->sendMessage($chat_id, 'Write your EC2 instance id. (i-00000000000000000)');
 
-            $instance = InstanceEC2::create([
-                'chat_id' => $chat_id,
-                'instance_id' => $instance_id
-            ]);
+            case preg_match($pattern_instance, $action):
+                $instance_id = $request->input('message')['text'];
 
-            $telegram->sendMessage($chat_id, 'Write your Access key (AC:00000000000000000)');
+                $instance = InstanceEC2::create([
+                    'chat_id' => $chat_id,
+                    'instance_id' => $instance_id
+                ]);
 
-        } if (preg_match($pattern_access_key, $action)) {
-            $access_key = $request->input('message')['text'];
+                $telegram->sendMessage($chat_id, 'Write your Access key (AC:00000000000000000)');
 
-            InstanceEC2::where('chat_id', $chat_id)
-                ->update(['aws_access_key' => $access_key,]);
+            case preg_match($pattern_access_key, $action):
+                $access_key = $request->input('message')['text'];
 
-            $telegram->sendMessage($chat_id, 'Write your Secret key (SC:00000000000000000)');
+                InstanceEC2::where('chat_id', $chat_id)
+                    ->update(['aws_access_key' => $access_key,]);
 
-        } if (preg_match($pattern_secret_key, $action)) {
-            $secret_key = $request->input('message')['text'];
+                $telegram->sendMessage($chat_id, 'Write your Secret key (SC:00000000000000000)');
 
-            InstanceEC2::where('chat_id', $chat_id)
-                ->update(['aws_secret_key' => $secret_key,]);
+            case preg_match($pattern_secret_key, $action):
+                $secret_key = $request->input('message')['text'];
+
+                InstanceEC2::where('chat_id', $chat_id)
+                    ->update(['aws_secret_key' => $secret_key,]);
 
         }
-
 
 //
 //
