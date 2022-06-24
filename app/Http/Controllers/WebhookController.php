@@ -56,7 +56,7 @@ class WebhookController extends Controller
             InstanceEC2::where('chat_id', $chat_id)
                 ->update(['aws_secret_key' => $secret_key,]);
 
-            $instance = InstanceEC2::where('chat_id', $chat_id);
+            $instance = InstanceEC2::where('chat_id', $chat_id)->get();
 
 
             $telegram->sendMessage($chat_id, 'Your ec2 instance'. $instance->instance_id . 'registered');
