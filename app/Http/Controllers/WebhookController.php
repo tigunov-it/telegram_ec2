@@ -11,6 +11,18 @@ use Illuminate\Support\Facades\Log;
 class WebhookController extends Controller
 {
 
+//    public function test()
+//    {
+////        $instance = InstanceEC2::where('chat_id', 22222)->get();
+////        dd($instance);
+//
+//        foreach (InstanceEC2::all()->where('chat_id', 22222) as $instance) {
+//            dd($instance->instance_id);
+//        }
+//
+//    }
+
+
     public function index(Request $request, Telegram $telegram)
     {
 
@@ -56,12 +68,18 @@ class WebhookController extends Controller
             InstanceEC2::where('chat_id', $chat_id)
                 ->update(['aws_secret_key' => $secret_key,]);
 
-            $instance = InstanceEC2::where('chat_id', $chat_id)->get();
 
-
-            $telegram->sendMessage($chat_id, 'Your ec2 instance'. $instance->instance_id . 'registered');
+            $telegram->sendMessage($chat_id, 'Your ec2 instance' . $this->getInstance($chat_id) . 'registered');
 
         }
 
     }
+
+    public function getInstance($chat_id) {
+        foreach (InstanceEC2::all()->where('chat_id', $chat_id) as $instance) {
+            return $instance->instance_id;
+        }
+
+    }
+
 }
