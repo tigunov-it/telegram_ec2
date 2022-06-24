@@ -11,8 +11,7 @@ class WebhookController extends Controller
     public function index(Request $request, Telegram $telegram)
     {
 
-        Log::debug($request->input('message')[('from')['id']]);
-
+        Log::debug($request->input(['message']['from']['id']));
 
 
 //        Log::debug($request->all());
