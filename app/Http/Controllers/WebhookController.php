@@ -38,7 +38,9 @@ class WebhookController extends Controller
             $telegram->sendMessage($chat_id, 'Write your Access key (AC:00000000000000000)');
 
         } elseif (preg_match($pattern_access_key, $action)) {
-            $access_key = $request->input('message')['text'];
+            $access_key_text = $request->input('message')['text'];
+            $needle = 'AC:';
+            $access_key = strrchr($access_key_text, $needle);
 
             InstanceEC2::where('chat_id', $chat_id)
                 ->update(['aws_access_key' => $access_key,]);
@@ -46,28 +48,14 @@ class WebhookController extends Controller
             $telegram->sendMessage($chat_id, 'Write your Secret key (SC:00000000000000000)');
 
         } elseif (preg_match($pattern_secret_key, $action)) {
-            $secret_key = $request->input('message')['text'];
+            $secret_key_text = $request->input('message')['text'];
+            $needle = 'SC:';
+            $secret_key = strrchr($secret_key_text, $needle);
 
             InstanceEC2::where('chat_id', $chat_id)
                 ->update(['aws_secret_key' => $secret_key,]);
 
         }
 
-
-//
-//
-//        $chat_id = $request->input('message.from.id');
-//        $secret_key = $request->input('message.text');
-//
-//        $instance = InstanceEC2::create([
-//            'instance_id' => $secret_key,
-//            'aws_access_key' => $secret_key,
-//            'aws_secret_key' => $chat_id
-//        ]);
-
-
-//        Log::debug($request->all());
-//        Log::debug($request->input('message')['text']);
-//        $telegram->sendMessage(env('TELEGRAM_CHAT_ID'), 'Pong');
     }
 }
