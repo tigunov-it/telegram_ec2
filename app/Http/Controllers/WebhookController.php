@@ -26,7 +26,7 @@ class WebhookController extends Controller
         $pattern_secret_key = '/SC:*/';
 
         if ($action == '/start') {
-            $telegram->sendMessage($chat_id, 'Write your EC2 instance id. (i-00000000000000000)');
+            $telegram->sendMessage($chat_id, 'Hello! Write your EC2 instance id. (i-00000000000000000)');
 
         } elseif (preg_match($pattern_instance, $action)) {
 
