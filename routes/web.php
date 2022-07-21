@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::post('/webhook', [\App\Http\Controllers\WebhookController::class, 'index']);
 ////Route::get('/test', [\App\Http\Controllers\WebhookController::class, 'test']);
 
